@@ -4,7 +4,7 @@ This tool aims to check referred links for a page.
 
 ## To build
 
-Ensure that the project is checked out and available in your GOPATH.
+Ensure that you have go installed, the project is checked out and available in your GOPATH.
 
     // build binary
     go get && go build
