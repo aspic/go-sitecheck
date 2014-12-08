@@ -1,13 +1,16 @@
 # Simple site link checking tool
 
-This tool aims to check referred links for a page.
+This tool aims to check referred links for a page (and potential slow
+loading sub pages).
 
-## To build
+## Build
 
-Ensure that the project is checked out and available in your GOPATH.
+Ensure that go is installed, and that the checked out project is present
+in your GOPATH.
 
     // build binary
-    go get && go build
+    $ go get && go build
 
-    // run
-    ./go-sitecheck -url <some url> -threshold <threshold in ms>
+## Usage
+
+    $ ./go-sitecheck -url=<some url> -threshold=<threshold in ms> -depth=<some-depth>
