@@ -12,4 +12,4 @@ Ensure that you have go installed, the project is checked out and available in y
 
 ## Usage
 
-    $ ./go-sitecheck -url=<some url> -threshold=<threshold in ms> -depth=<some-depth>
+    $ ./go-sitecheck -url=<some url> -threshold=<threshold in ms> -depth=<some depth>
