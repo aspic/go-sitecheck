@@ -5,8 +5,7 @@ loading sub pages).
 
 ## Build
 
-Ensure that go is installed, and that the checked out project is present
-in your GOPATH.
+Ensure that you have go installed, the project is checked out and available in your GOPATH.
 
     // build binary
     $ go get && go build
