@@ -15,6 +15,7 @@ var m = make(map[string]string)
 var limit time.Duration
 var maxDepth int
 var exceeded int
+var urlMap = make(map[string]string)
 
 //TODO: use goroutines
 func LinkScrape(url string, depth int) {
@@ -30,7 +31,7 @@ func LinkScrape(url string, depth int) {
     doc.Find("a").Each(func(i int, s *goquery.Selection) {
         link, exists := s.Attr("href")
         if(exists && strings.HasPrefix(link, "http") && m[link] == "") {
-            links = append(links, link)
+            links = append(links, RewriteLink(link))
             m[link] = link
         }
     })
@@ -60,15 +61,34 @@ func Scrape(link string, depth int) {
     }
 }
 
+// Replaces potential url 
+func RewriteLink(link string) string {
+    for k := range urlMap {
+        if(strings.Contains(link, k)) {
+            return strings.Replace(link, k, urlMap[k], -1)
+        }
+    }
+    return link
+}
+
 func main() {
     var url = flag.String("url", "http://nrk.no", "URL of site to check")
     var threshold = flag.Int("threshold", 100, "load time threshold")
     var depth = flag.Int("depth", 1, "depth of links to crawl")
+    var mappings = flag.String("map", "", "Url map of link replacements")
 
     flag.Parse()
+
+    if(*mappings != "") {
+        for _, url := range strings.Split(*mappings, ",") {
+            urlMapping := strings.Split(url, ":")
+            urlMap[urlMapping[0]] = urlMapping[1]
+        }
+    }
+
     limit = time.Duration(*threshold)
     maxDepth = *depth
-    fmt.Printf("Crawler set up with url=%s, threshold=%d and depth=%d\n", *url, limit, maxDepth)
-    LinkScrape(*url, 0)
+    fmt.Printf("Crawler set up with url=%s, threshold=%d, depth=%d and url map=%s\n", *url, limit, maxDepth, *mappings)
+    LinkScrape(RewriteLink(*url), 0)
     fmt.Printf("Crawled %d links, %d links exceeded limit (%dms)\n", len(m), exceeded, limit)
 }

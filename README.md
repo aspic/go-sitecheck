@@ -13,3 +13,16 @@ Ensure that you have go installed, the project is checked out and available in y
 ## Usage
 
     $ ./go-sitecheck -url=<some url> -threshold=<threshold in ms> -depth=<some depth>
+
+### URL mapping
+
+By providing a map parameter this utility can translate between domains
+and/or paths. This can be useful if the tool is used for scraping
+external resources but testing internal resources.
+
+Example usage:
+    
+    $ ./go-sitecheck -map=nrk.no:vg.no
+
+This will replace the text fragment in all discovered links that
+contains "nrk.no" with "vg.no". 
