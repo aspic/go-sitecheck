@@ -72,10 +72,10 @@ func RewriteLink(link string) string {
 }
 
 func main() {
-    var url = flag.String("url", "http://nrk.no", "URL of site to check")
+    var url = flag.String("url", "http://nrk.no", "url of site to crawl")
     var threshold = flag.Int("threshold", 100, "load time threshold")
     var depth = flag.Int("depth", 1, "depth of links to crawl")
-    var mappings = flag.String("map", "", "Url map of link replacements")
+    var mappings = flag.String("map", "", "map of link replacements")
 
     flag.Parse()
 
