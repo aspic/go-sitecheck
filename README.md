@@ -1,4 +1,4 @@
-# Simple site link checking tool
+# Simple (and rude) link checking tool
 
 This tool aims to check referred links for a page (and potential slow
 loading sub pages).
@@ -26,3 +26,12 @@ Example usage:
 
 This will replace the text fragment in all discovered links that
 contains "nrk.no" with "vg.no". 
+
+### Ignore domains
+
+A comma separated list of domains/sub-urls to ignore can be passed to
+the tool by specifying the ignore parameter.
+
+Example usage:
+
+    $ ./go-sitecheck -ignore=tv.nrk.no,radio.nrk.no

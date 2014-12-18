@@ -16,6 +16,7 @@ var limit time.Duration
 var maxDepth int
 var exceeded int
 var urlMap = make(map[string]string)
+var filter = make([]string, 0)
 
 //TODO: use goroutines
 func LinkScrape(url string, depth int) {
@@ -30,7 +31,7 @@ func LinkScrape(url string, depth int) {
     var links = make([]string, 0)
     doc.Find("a").Each(func(i int, s *goquery.Selection) {
         link, exists := s.Attr("href")
-        if(exists && strings.HasPrefix(link, "http") && m[link] == "") {
+        if(exists && strings.HasPrefix(link, "http") && m[link] == "" && !ignoreLink(link)) {
             links = append(links, RewriteLink(link))
             m[link] = link
         }
@@ -39,6 +40,15 @@ func LinkScrape(url string, depth int) {
     for _,link := range links {
         Scrape(link, depth)
     }
+}
+
+func ignoreLink(link string) bool {
+    for _, item := range filter {
+        if strings.Contains(link, item) {
+            return true
+        }
+    }
+    return false
 }
 
 func Scrape(link string, depth int) {
@@ -76,6 +86,7 @@ func main() {
     var threshold = flag.Int("threshold", 100, "load time threshold")
     var depth = flag.Int("depth", 1, "depth of links to crawl")
     var mappings = flag.String("map", "", "map of link replacements")
+    var ignores = flag.String("ignore", "", "map of domains to ignore")
 
     flag.Parse()
 
@@ -83,6 +94,11 @@ func main() {
         for _, url := range strings.Split(*mappings, ",") {
             urlMapping := strings.Split(url, ":")
             urlMap[urlMapping[0]] = urlMapping[1]
+        }
+    }
+    if(*ignores != "") {
+        for _, domain := range strings.Split(*ignores, ",") {
+            filter = append(filter, domain)
         }
     }
 
